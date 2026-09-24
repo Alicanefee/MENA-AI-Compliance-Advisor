@@ -23,6 +23,7 @@ from compliance.config import get_settings  # noqa: E402
 from compliance.corpus.lookup import CorpusLookup  # noqa: E402
 from compliance.corpus.store import load_passages  # noqa: E402
 from compliance.education.content import iter_citations  # noqa: E402
+from compliance.disclaimer import short as disclaimer  # noqa: E402
 
 
 def main() -> int:
@@ -54,4 +55,6 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    code = main()
+    print("\n" + disclaimer())
+    raise SystemExit(code)

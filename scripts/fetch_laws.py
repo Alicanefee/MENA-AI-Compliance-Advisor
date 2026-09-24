@@ -21,6 +21,7 @@ sys.stdout.reconfigure(encoding="utf-8")
 from compliance.config import get_settings  # noqa: E402
 from compliance.corpus.fetch import fetch_source, load_manifest, raw_file  # noqa: E402
 from compliance.corpus.registry import load_registry  # noqa: E402
+from compliance.disclaimer import short as disclaimer  # noqa: E402
 
 
 def main() -> int:
@@ -63,4 +64,6 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    code = main()
+    print("\n" + disclaimer())
+    raise SystemExit(code)

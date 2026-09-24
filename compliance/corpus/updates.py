@@ -13,6 +13,7 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
+from compliance import disclaimer
 from compliance.config import get_settings
 from compliance.corpus.chunker import chunk_text
 from compliance.corpus.extract import extract
@@ -89,6 +90,7 @@ def check_source(source: Source, llm=None) -> dict:
     """Re-download one source; on change, write and return a diff report."""
     result = fetch_source(source)
     report = {
+        "disclaimer": disclaimer.short("en"),
         "source_id": source.id,
         "checked_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "status": result.status,

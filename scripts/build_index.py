@@ -14,6 +14,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 sys.stdout.reconfigure(encoding="utf-8")
 
 from compliance.corpus.store import build_passages, save_passages  # noqa: E402
+from compliance.disclaimer import short as disclaimer  # noqa: E402
 
 
 def main() -> int:
@@ -41,4 +42,6 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    code = main()
+    print("\n" + disclaimer())
+    raise SystemExit(code)

@@ -15,6 +15,15 @@
 - **All legal, regulatory and compliance obligations** arising from your use of AI systems, or from any decision based on this software's output, **remain entirely your own**.
 - Have every case reviewed by a qualified legal professional before acting on it. The case register requires a named human reviewer to approve a case for this reason.
 
+## Where this notice appears
+
+The same notice (in English and Arabic) is attached to every output channel, so it stays with the content when it is shared:
+
+- the web interface (full text at the top of every page) and every answer, lesson, quiz result and scenario solution;
+- every API response that carries advice, case data, training results or change reports;
+- the case workbook `cases.xlsx`, whose first sheet is the disclaimer;
+- the output of every command-line script.
+
 ## No affiliation
 
 This project is independent and is not affiliated with, endorsed by or connected to any government authority named in it, including MOHRE, the UAE Data Office, SDAIA, HRSD or the European Union institutions.

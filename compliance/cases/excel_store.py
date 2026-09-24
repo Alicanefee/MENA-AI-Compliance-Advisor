@@ -3,6 +3,7 @@
 The workbook (`data/cases/cases.xlsx`) is meant to be opened and edited by
 compliance staff directly, so it stays deliberately simple:
 
+  Disclaimer information-only notice (first sheet, EN/AR)
   Cases      one row per open-ended compliance question / AI use case
   Documents  one row per required document of a case
   Log        append-only audit trail of changes
@@ -21,9 +22,10 @@ from datetime import date, datetime, timezone
 from pathlib import Path
 
 from openpyxl import Workbook, load_workbook
-from openpyxl.styles import Font
+from openpyxl.styles import Alignment, Font
 from openpyxl.worksheet.worksheet import Worksheet
 
+from compliance import disclaimer
 from compliance.config import get_settings
 
 CASE_COLUMNS = [
@@ -34,6 +36,7 @@ DOC_COLUMNS = [
     "case_id", "doc_id", "name", "kind", "mandatory", "basis", "status", "due_date", "file", "updated_at", "note",
 ]
 LOG_COLUMNS = ["timestamp", "case_id", "actor", "action", "detail"]
+DISCLAIMER_SHEET = "Disclaimer"
 
 CASE_STATUSES = ("open", "in_review", "approved", "closed")
 DOC_STATUSES = ("missing", "received", "waived", "not_applicable")
@@ -74,8 +77,26 @@ class CaseStore:
                 for cell in ws[1]:
                     cell.font = Font(bold=True)
                 ws.freeze_panes = "A2"
+            self._add_disclaimer_sheet(wb)
             self._save(wb)
-        return load_workbook(self.path)
+        wb = load_workbook(self.path)
+        if DISCLAIMER_SHEET not in wb.sheetnames:  # workbooks created by earlier versions
+            self._add_disclaimer_sheet(wb)
+            self._save(wb)
+        return wb
+
+    @staticmethod
+    def _add_disclaimer_sheet(wb) -> None:
+        """The workbook may be shared on its own, so it carries the disclaimer itself."""
+        ws = wb.create_sheet(DISCLAIMER_SHEET, 0)
+        ws.column_dimensions["A"].width = 120
+        ws.append(["For information only - not legal advice. All legal responsibility rests with the user."])
+        ws["A1"].font = Font(bold=True, size=13)
+        for lang in ("en", "ar"):
+            ws.append([""])
+            ws.append([disclaimer.full(lang)])
+            ws.cell(row=ws.max_row, column=1).alignment = Alignment(wrap_text=True, vertical="top")
+        wb.active = 0
 
     def _save(self, wb) -> None:
         tmp = self.path.with_suffix(".tmp.xlsx")

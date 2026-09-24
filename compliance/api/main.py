@@ -106,6 +106,10 @@ def create_app(
 
     app = FastAPI(title="MENA AI Compliance Advisor", version=__version__)
 
+    def notice(data: dict, lang: str = "en") -> dict:
+        """Attach the short disclaimer so it travels with API output used outside the UI."""
+        return {**data, "disclaimer": disclaimer.short(lang)}
+
     def case_call(fn, *args, **kwargs):
         try:
             return fn(*args, **kwargs)
@@ -162,13 +166,13 @@ def create_app(
 
     @app.get("/api/sources/{source_id}/diffs")
     def source_diffs(source_id: str):
-        return list_reports(_source(source_id).id)
+        return [notice(r) for r in list_reports(_source(source_id).id)]
 
     @app.post("/api/sources/{source_id}/check")
     def source_check(source_id: str, summarize: bool = False):
         """Re-download one source now and return a diff report if it changed.
         The running index is not modified; rebuild it to apply changes."""
-        return check_source(_source(source_id), llm if summarize else None)
+        return notice(check_source(_source(source_id), llm if summarize else None))
 
     # ---------------- advice ----------------
     @app.post("/api/ask", response_model=Answer)
@@ -191,34 +195,37 @@ def create_app(
             answer=answer.model_dump() if answer else None,
         )
         triggers = matched_triggers(f"{req.question} {req.ai_use_case}")
-        return {
-            "case_id": case_id,
-            "answer": answer.model_dump() if answer else None,
-            "recommended_modules": catalog.recommend(scope, triggers, req.lang),
-        }
+        return notice(
+            {
+                "case_id": case_id,
+                "answer": answer.model_dump() if answer else None,
+                "recommended_modules": catalog.recommend(scope, triggers, req.lang),
+            },
+            req.lang,
+        )
 
     @app.get("/api/cases")
     def list_cases(status: str | None = None):
         return case_call(cases.list_cases, status)
 
     @app.get("/api/cases/{case_id}")
-    def get_case(case_id: str):
-        return case_call(cases.get_case, case_id)
+    def get_case(case_id: str, lang: Lang = "en"):
+        return notice(case_call(cases.get_case, case_id), lang)
 
     @app.patch("/api/cases/{case_id}")
     def update_case(case_id: str, req: CaseUpdate):
         fields = req.model_dump(exclude={"actor"}, exclude_none=True)
-        return case_call(cases.update_case, case_id, req.actor, **fields)
+        return notice(case_call(cases.update_case, case_id, req.actor, **fields))
 
     @app.post("/api/cases/{case_id}/documents")
     def add_document(case_id: str, req: DocumentIn):
         doc_id = case_call(cases.add_document, case_id, req.name, req.mandatory, req.due_date, req.actor)
-        return {"doc_id": doc_id, "case": case_call(cases.get_case, case_id)}
+        return notice({"doc_id": doc_id, "case": case_call(cases.get_case, case_id)})
 
     @app.patch("/api/cases/{case_id}/documents/{doc_id}")
     def update_document(case_id: str, doc_id: str, req: DocumentUpdate):
         fields = req.model_dump(exclude={"actor"}, exclude_none=True)
-        return case_call(cases.update_document, case_id, doc_id, req.actor, **fields)
+        return notice(case_call(cases.update_document, case_id, doc_id, req.actor, **fields))
 
     @app.post("/api/cases/{case_id}/documents/{doc_id}/upload")
     async def upload(case_id: str, doc_id: str, file: UploadFile = File(...)):
@@ -230,7 +237,7 @@ def create_app(
         if len(content) > MAX_UPLOAD_BYTES:
             raise HTTPException(413, "File exceeds 20 MB")
         path = case_call(cases.save_upload, case_id, doc_id, name, content)
-        return {"saved": path, "case": case_call(cases.get_case, case_id)}
+        return notice({"saved": path, "case": case_call(cases.get_case, case_id)})
 
     # ---------------- learning ----------------
     def progress_call(fn, *args, **kwargs):
@@ -272,7 +279,7 @@ def create_app(
         result["module_progress"] = progress.module_status(
             req.learner_id, result["module_id"], catalog.module_quiz_ids(result["module_id"])
         )
-        return result
+        return notice(result, req.lang)
 
     @app.get("/api/learn/scenarios")
     def scenario_list(lang: Lang = "en"):

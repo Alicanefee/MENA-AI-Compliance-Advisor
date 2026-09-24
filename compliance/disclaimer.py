@@ -2,12 +2,12 @@
 
 SHORT = {
     "en": (
-        "Informational example only - not legal advice. Verify against the official text "
-        "and consult a qualified lawyer. You remain responsible for every decision."
+        "For information only - not legal advice. All legal responsibility rests with the user. "
+        "Verify against the official text and consult a qualified lawyer."
     ),
     "ar": (
-        "مثال لأغراض المعلومات فقط - وليس استشارة قانونية. تحقق من النص الرسمي واستشر محامياً "
-        "مؤهلاً. تبقى مسؤولاً عن كل قرار تتخذه."
+        "للعلم فقط - وليست استشارة قانونية. تقع المسؤولية القانونية كاملةً على المستخدم. "
+        "تحقق من النص الرسمي واستشر محامياً مؤهلاً."
     ),
 }
 

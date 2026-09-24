@@ -35,6 +35,15 @@ def test_case_lifecycle_and_document_alerts(store):
     assert doc_id == "doc-3"
 
 
+def test_workbook_carries_disclaimer_sheet(store):
+    from openpyxl import load_workbook
+
+    store.create_case("Layla", "Question?", ["AE"])
+    wb = load_workbook(store.path)
+    assert wb.sheetnames[0] == "Disclaimer"
+    assert "All legal responsibility rests with the user" in wb["Disclaimer"]["A1"].value
+
+
 def test_approval_requires_human_reviewer(store):
     cid = store.create_case("Omar", "Question?", ["SA"])
     with pytest.raises(CaseError):

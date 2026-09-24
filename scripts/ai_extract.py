@@ -23,6 +23,7 @@ from compliance.corpus.ai_extract import transcribe  # noqa: E402
 from compliance.corpus.registry import load_registry  # noqa: E402
 from compliance.llm import get_llm  # noqa: E402
 from compliance.llm.base import LLMError  # noqa: E402
+from compliance.disclaimer import short as disclaimer  # noqa: E402
 
 
 def main() -> int:
@@ -62,4 +63,6 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    code = main()
+    print("\n" + disclaimer())
+    raise SystemExit(code)

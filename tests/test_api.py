@@ -43,6 +43,8 @@ def test_case_flow(client):
     assert created["recommended_modules"][0]["id"] == "foundations"
     case = client.get(f"/api/cases/{cid}").json()
     assert case["jurisdictions"] == "AE" and case["documents"]
+    assert "legal responsibility rests with the user" in case["disclaimer"]
+    assert "disclaimer" in created
 
     doc_id = case["documents"][0]["doc_id"]
     up = client.post(f"/api/cases/{cid}/documents/{doc_id}/upload", files={"file": ("contract.pdf", b"%PDF-1.4", "application/pdf")})
@@ -63,7 +65,7 @@ def test_learning_flow(client):
     point = detail["lessons"][0]["points"][0]
     assert point["cite"]["check"] == "confirmed"  # matched against the fixture passage
     r = client.post("/api/learn/answer", json={"learner_id": "amal", "quiz_id": "uae-labour-q1", "answer": 1}).json()
-    assert r["correct"] and r["module_progress"]["answered"] == 1
+    assert r["correct"] and r["module_progress"]["answered"] == 1 and r["disclaimer"]
     assert client.post("/api/learn/answer", json={"learner_id": "bad id", "quiz_id": "uae-labour-q1", "answer": 1}).status_code == 400
 
     scen = client.get("/api/learn/scenarios").json()

@@ -26,6 +26,7 @@ from compliance.corpus.fetch import load_manifest  # noqa: E402
 from compliance.corpus.registry import load_registry  # noqa: E402
 from compliance.corpus.updates import STALE_AFTER_DAYS, check_source, freshness  # noqa: E402
 from compliance.llm import get_llm  # noqa: E402
+from compliance.disclaimer import short as disclaimer  # noqa: E402
 
 
 def main() -> int:
@@ -72,4 +73,6 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    code = main()
+    print("\n" + disclaimer())
+    raise SystemExit(code)
