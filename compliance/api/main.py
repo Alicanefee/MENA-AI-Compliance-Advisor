@@ -104,7 +104,7 @@ def create_app(
     progress = progress or ProgressStore()
     registry = load_registry()
 
-    app = FastAPI(title="UAE AI Compliance Advisor", version=__version__)
+    app = FastAPI(title="MENA AI Compliance Advisor", version=__version__)
 
     def case_call(fn, *args, **kwargs):
         try:

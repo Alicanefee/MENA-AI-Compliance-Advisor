@@ -18,7 +18,7 @@ import requests
 from compliance.config import get_settings
 from compliance.corpus.registry import Source
 
-USER_AGENT = "uae-ai-compliance/0.1 (+https://github.com/Alicanefee/uae-ai-compliance)"
+USER_AGENT = "mena-ai-compliance-advisor/0.1 (+https://github.com/Alicanefee/MENA-AI-Compliance-Advisor)"
 MIN_INTERVAL_S = 2.0
 TIMEOUT_S = 90
 

@@ -1,6 +1,6 @@
-# UAE AI Compliance Advisor
+# MENA AI Compliance Advisor
 
-> **Source-grounded compliance support for companies adopting AI in the UAE, Saudi Arabia and the EU.**
+> **Source-grounded compliance support for companies adopting AI in the Middle East - starting with the UAE and Saudi Arabia, with EU rules for cross-border work.**
 > Ask questions, track open cases and their documents in Excel, and train staff. Every statement must quote the official text, or it is not shown.
 
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)

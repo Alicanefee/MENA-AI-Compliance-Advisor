@@ -1,5 +1,5 @@
 [project]
-name = "uae-ai-compliance"
+name = "mena-ai-compliance-advisor"
 version = "0.1.0"
 description = "Source-grounded AI compliance advisor, case tracker and training for UAE, Saudi Arabia and EU law."
 requires-python = ">=3.11"
