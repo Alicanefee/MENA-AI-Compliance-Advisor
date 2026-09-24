@@ -133,7 +133,12 @@ def create_app(
 
     @app.get("/api/disclaimer")
     def get_disclaimer(lang: Lang = "en"):
-        return {"short": disclaimer.short(lang), "full": disclaimer.full(lang)}
+        return {
+            "short": disclaimer.short(lang),
+            "full": disclaimer.full(lang),
+            "data": disclaimer.data(lang),
+            "training": disclaimer.training(lang),
+        }
 
     @app.get("/api/sources")
     def sources(lang: Lang = "en"):
@@ -258,7 +263,13 @@ def create_app(
             progress_call(progress.ensure_learner, learner_id, "", lang)
             for m in items:
                 m["progress"] = progress.module_status(learner_id, m["id"], catalog.module_quiz_ids(m["id"]))
-        return {"meta": catalog.meta(), "modules": items, "tracks": catalog.tracks(lang), "disclaimer": disclaimer.short(lang)}
+        return {
+            "meta": catalog.meta(),
+            "modules": items,
+            "tracks": catalog.tracks(lang),
+            "disclaimer": disclaimer.short(lang),
+            "training_notice": disclaimer.training(lang),
+        }
 
     @app.get("/api/learn/modules/{module_id}")
     def module(module_id: str, lang: Lang = "en", learner_id: str | None = None):
@@ -268,7 +279,7 @@ def create_app(
         if learner_id:
             for lesson in m["lessons"]:
                 progress_call(progress.record_view, learner_id, lesson["id"])
-        return {**m, "disclaimer": disclaimer.short(lang)}
+        return {**m, "disclaimer": disclaimer.short(lang), "training_notice": disclaimer.training(lang)}
 
     @app.post("/api/learn/answer")
     def answer(req: QuizAnswerIn):
@@ -297,7 +308,7 @@ def create_app(
         a = catalog.scenario_answer(scenario_id, question_id, lang)
         if a is None:
             raise HTTPException(404, "Question not found")
-        return {**a, "disclaimer": disclaimer.short(lang)}
+        return {**a, "disclaimer": disclaimer.short(lang), "training_notice": disclaimer.training(lang)}
 
     # ---------------- web UI ----------------
     @app.get("/", include_in_schema=False)

@@ -39,6 +39,7 @@
           placeholder="e.g. We want to use AI to screen CVs for our Dubai office. What do we need?"></textarea>
         <label for="ask-context" data-i18n="context">AI use case (optional)</label>
         <input id="ask-context" data-i18n-placeholder="context_ph" placeholder="e.g. ranking applicants by skills and experience">
+        <p class="notice" data-notice="data" role="note"></p>
         <fieldset class="row">
           <legend data-i18n="jurisdictions">Jurisdictions (none = detect)</legend>
           <label><input type="checkbox" name="jur" value="AE"> UAE</label>
@@ -63,6 +64,7 @@
         </div>
         <label><span data-i18n="question">Question</span><textarea id="case-q" rows="2" required minlength="3"></textarea></label>
         <label><span data-i18n="context">AI use case</span><input id="case-use"></label>
+        <p class="notice" data-notice="data" role="note"></p>
         <button type="submit" class="primary" data-i18n="create_case">Create case and run advisor</button>
       </form>
       <div class="card">
@@ -86,11 +88,13 @@
         <input id="learner-id" required pattern="[A-Za-z0-9._@\-]{1,64}" maxlength="64">
         <button type="submit" class="primary" data-i18n="load">Load</button>
       </form>
+      <p class="notice" data-notice="training" role="note"></p>
       <div id="learn-out"></div>
     </section>
 
     <!-- Scenarios -->
     <section role="tabpanel" id="panel-scenarios" aria-labelledby="tab-scenarios" hidden>
+      <p class="notice" data-notice="training" role="note"></p>
       <div id="scen-out"></div>
     </section>
 

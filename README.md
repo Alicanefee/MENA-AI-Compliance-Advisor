@@ -9,6 +9,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 > ⚠️ **Informational examples only - not legal advice.** Indexed texts may be outdated or unofficial translations, and curated content can contain errors. **All legal obligations arising from use of this software remain solely with the user.** See [DISCLAIMER.md](DISCLAIMER.md).
+>
+> 🔒 **Do not enter personal or confidential data.** With a language model enabled, questions are sent to its provider; case files stay local. The app has no authentication - run it locally or on a protected internal network. See [Your data](DISCLAIMER.md#your-data).
 
 ---
 

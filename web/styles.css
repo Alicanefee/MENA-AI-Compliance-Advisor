@@ -118,3 +118,9 @@ th, td { text-align: start; padding: 6px 8px; border-bottom: 1px solid var(--bor
 .quiz-q { border-top: 1px solid var(--border); padding-block: 10px; }
 .quiz-q label { display: block; padding: 2px 0; }
 .error { color: var(--bad); }
+.notice {
+  margin: 0; padding: 6px 10px; font-size: 0.85rem;
+  background: var(--note-bg); border-inline-start: 3px solid var(--note-border); border-radius: 4px;
+}
+.notice:empty { display: none; }
+section > .notice { margin-bottom: 14px; }

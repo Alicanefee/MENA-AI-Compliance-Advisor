@@ -25,6 +25,7 @@ const I18N = {
     passages_n: "passages", last_checked: "last checked", never: "never", ai_extraction: "AI transcription",
     unchanged: "No change since the last download.", changed: "Changed - see report below.",
     note: "note", min: "min", level: { beginner: "beginner", intermediate: "intermediate", advanced: "advanced" },
+    upload_note: "Uploaded files stay on this server and are never sent to a language model. They may contain personal data - handle them under your data protection rules.",
   },
   ar: {
     app_title: "مستشار الامتثال للذكاء الاصطناعي", app_sub: "الإمارات · السعودية · الاتحاد الأوروبي",
@@ -50,6 +51,7 @@ const I18N = {
     passages_n: "مقاطع", last_checked: "آخر فحص", never: "أبداً", ai_extraction: "نسخ بالذكاء الاصطناعي",
     unchanged: "لا تغيير منذ آخر تحميل.", changed: "تم التغيير - انظر التقرير أدناه.",
     note: "ملاحظة", min: "دقيقة", level: { beginner: "مبتدئ", intermediate: "متوسط", advanced: "متقدم" },
+    upload_note: "تبقى الملفات المرفوعة على هذا الخادم ولا تُرسل إلى أي نموذج لغوي. قد تحتوي على بيانات شخصية - تعامل معها وفق قواعد حماية البيانات لديك.",
   },
 };
 
@@ -99,6 +101,7 @@ async function loadChrome() {
   try {
     const [disc, health] = await Promise.all([api(`/api/disclaimer?lang=${state.lang}`), api("/api/health")]);
     $("#disclaimer").textContent = disc.full;
+    document.querySelectorAll("[data-notice]").forEach((el) => { el.textContent = disc[el.dataset.notice] || ""; });
     const mode = $("#mode");
     mode.textContent = health.mode === "generated" ? t("mode_generated") : t("mode_extractive");
     mode.className = `pill ${health.mode === "generated" ? "ok" : "warn"}`;
@@ -271,7 +274,7 @@ async function openCase(caseId, created) {
         <label><span>${esc(t("review_note"))}</span><input name="review_note" value="${esc(c.review_note)}"></label>
         <div><button class="primary" type="submit">${esc(t("save"))}</button></div>
       </form></div>`;
-    html += `<div class="card"><h2>${esc(t("docs"))}</h2><div class="table-wrap"><table><tbody>` + c.documents.map((d) => `
+    html += `<div class="card"><h2>${esc(t("docs"))}</h2><p class="notice" role="note">${esc(t("upload_note"))}</p><div class="table-wrap"><table><tbody>` + c.documents.map((d) => `
       <tr><td><strong>${esc(d.name)}</strong> ${d.mandatory ? `<span class="pill bad">${esc(t("mandatory"))}</span>` : ""}
         <div class="muted">${esc(d.note)}</div>${d.file ? `<div class="muted">${esc(d.file)}</div>` : ""}</td>
       <td><select data-doc-status="${esc(d.doc_id)}">${["missing", "received", "waived", "not_applicable"].map((s) => `<option value="${s}" ${s === d.status ? "selected" : ""}>${esc(t(s))}</option>`).join("")}</select></td>

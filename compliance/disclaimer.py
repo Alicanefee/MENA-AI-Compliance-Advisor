@@ -38,3 +38,36 @@ def short(lang: str = "en") -> str:
 
 def full(lang: str = "en") -> str:
     return FULL.get(lang, FULL["en"])
+
+
+# Shown next to every input field that may be sent to a language model provider.
+DATA = {
+    "en": (
+        "Do not enter personal or confidential data. When a language model is enabled, "
+        "questions and use-case descriptions are sent to its provider. Use general, anonymised descriptions."
+    ),
+    "ar": (
+        "لا تُدخل بيانات شخصية أو سرية. عند تفعيل نموذج لغوي تُرسل الأسئلة ووصف حالة الاستخدام "
+        "إلى مزود النموذج. استخدم أوصافاً عامة مجهولة الهوية."
+    ),
+}
+
+# Shown on training modules and scenarios.
+TRAINING = {
+    "en": (
+        "Training is for awareness only - not a certificate or qualification. "
+        "Scenarios are fictional and must not be used to decide real cases."
+    ),
+    "ar": (
+        "التدريب للتوعية فقط وليس شهادة أو مؤهلاً معتمداً. "
+        "السيناريوهات خيالية ولا تصلح للفصل في حالات حقيقية."
+    ),
+}
+
+
+def data(lang: str = "en") -> str:
+    return DATA.get(lang, DATA["en"])
+
+
+def training(lang: str = "en") -> str:
+    return TRAINING.get(lang, TRAINING["en"])

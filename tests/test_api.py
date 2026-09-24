@@ -23,7 +23,10 @@ def test_health_and_ui(client):
     assert health["mode"] == "extractive" and health["passages"] == 6
     assert client.get("/").status_code == 200
     assert client.get("/static/app.js").status_code == 200
-    assert "not legal advice" in client.get("/api/disclaimer").json()["full"]
+    notices = client.get("/api/disclaimer").json()
+    assert "not legal advice" in notices["full"]
+    assert "personal or confidential data" in notices["data"]
+    assert "not a certificate" in notices["training"]
 
 
 def test_ask_returns_sources_and_documents(client):
@@ -71,6 +74,7 @@ def test_learning_flow(client):
     scen = client.get("/api/learn/scenarios").json()
     answer = client.get(f"/api/learn/scenarios/{scen[0]['id']}/q1/answer").json()
     assert answer["points"] and answer["could_change"]
+    assert "fictional" in answer["training_notice"]
 
 
 def test_sources_listing(client):
