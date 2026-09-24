@@ -1,0 +1,343 @@
+# Training curriculum.
+#
+# Every legal point carries a citation (source + article) and `expect`: phrases
+# the official text must contain. `scripts/verify_content.py` checks each point
+# against the indexed official texts; the UI labels points as confirmed or not.
+#
+# kind: law       statement about what a provision says
+# kind: practice  recommended practice; never presented as a legal requirement
+# kind: note      caveat about the source or its currency
+#
+# Translations: `ar` is provided for titles and summaries; lesson points fall
+# back to English until reviewed Arabic translations are added.
+
+version: "0.1.0"
+reviewed_at: "2026-09-24"
+
+modules:
+  - id: foundations
+    level: beginner
+    minutes: 15
+    prerequisites: []
+    title: { en: "How AI compliance is layered", ar: "طبقات الامتثال في مجال الذكاء الاصطناعي" }
+    summary:
+      en: "Tell binding law from guidance, and see when a Gulf company can fall under EU rules."
+      ar: "التمييز بين القانون الملزم والإرشادات، ومتى قد تخضع شركة خليجية للقواعد الأوروبية."
+    lessons:
+      - id: foundations-1
+        title: { en: "Binding law versus guidance", ar: "القانون الملزم مقابل الإرشادات" }
+        points:
+          - kind: law
+            text:
+              en: "The UAE AI Charter sets out principles such as human oversight, algorithmic bias and data privacy. It is a policy charter, not a statute, so its principles are not in themselves enforceable obligations."
+            cite: { source: uae_ai_charter, expect: ["human oversight"] }
+          - kind: law
+            text:
+              en: "SDAIA's AI Ethics Principles are Saudi Arabia's national ethics framework for AI and include fairness, transparency and accountability."
+            cite: { source: sa_ai_ethics, expect: ["fairness", "transparency", "accountability"] }
+          - kind: practice
+            text:
+              en: "Treat charters and ethics principles as the regulator's expectations: document how you meet them, but base legal conclusions on statutes and regulations."
+      - id: foundations-2
+        title: { en: "When EU law reaches Gulf companies", ar: "متى يمتد القانون الأوروبي إلى الشركات الخليجية" }
+        points:
+          - kind: law
+            text:
+              en: "The EU AI Act applies to providers and deployers established in a third country where the output produced by the AI system is used in the Union."
+            cite: { source: eu_ai_act, article: "2", expect: ["third country", "output produced by the ai system is used in the union"] }
+          - kind: practice
+            text:
+              en: "Map where each AI system's output is used (offices, customers, candidates). A single EU-based user group can bring EU obligations into scope."
+    quiz:
+      - id: foundations-q1
+        question: { en: "Which of these is a policy framework rather than a statute?" }
+        options:
+          en: ["UAE Federal Decree-Law No. 33 of 2021", "The UAE AI Charter", "UAE Federal Decree-Law No. 45 of 2021", "Saudi Royal Decree No. M/19"]
+        answer: 1
+        explanation: { en: "The Charter sets principles; the others are laws." }
+        cite: { source: uae_ai_charter, expect: ["human oversight"] }
+      - id: foundations-q2
+        question: { en: "A Dubai company's AI tool produces candidate rankings that its Paris office uses. Can the EU AI Act apply?" }
+        options:
+          en:
+            - "No - only EU-established companies are covered"
+            - "Yes - it can apply where the system's output is used in the Union"
+            - "Only if the servers are located in the EU"
+            - "Only if the company has more than 250 employees"
+        answer: 1
+        explanation: { en: "Article 2 covers third-country providers and deployers whose AI output is used in the Union." }
+        cite: { source: eu_ai_act, article: "2", expect: ["third country"] }
+
+  - id: uae-labour
+    level: beginner
+    minutes: 25
+    prerequisites: [foundations]
+    title: { en: "UAE Labour Law touchpoints for AI in HR", ar: "قانون العمل الإماراتي والذكاء الاصطناعي في الموارد البشرية" }
+    summary:
+      en: "Recruitment, working time and termination rules that AI-assisted HR processes must respect."
+      ar: "قواعد التوظيف وساعات العمل وإنهاء الخدمة التي يجب أن تحترمها عمليات الموارد البشرية المدعومة بالذكاء الاصطناعي."
+    lessons:
+      - id: uae-labour-1
+        title: { en: "Recruitment and non-discrimination", ar: "التوظيف وعدم التمييز" }
+        points:
+          - kind: law
+            text:
+              en: "Discrimination on the basis of race, colour, sex, religion, national or social origin or disability that impairs equality of opportunity is prohibited."
+            cite: { source: uae_labour_law, article: "4", expect: ["race, colour, sex, religion, national or social origin or disability"] }
+          - kind: law
+            text:
+              en: "The employment contract is made in two copies: one kept by the employer and one handed to the worker, using the forms set by the implementing regulation."
+            cite: { source: uae_labour_law, article: "8", expect: ["two copies"] }
+          - kind: law
+            text:
+              en: "A probationary period may not exceed six months from the start of work."
+            cite: { source: uae_labour_law, article: "9", expect: ["six months"] }
+          - kind: practice
+            text:
+              en: "AI screening models can reproduce protected characteristics through proxies (names, photos, graduation year, nationality). Remove them, test outcomes by group, and keep a person accountable for each hiring decision."
+      - id: uae-labour-2
+        title: { en: "Working time and AI productivity tools", ar: "ساعات العمل وأدوات قياس الإنتاجية" }
+        points:
+          - kind: law
+            text:
+              en: "Overtime may not exceed two hours per day, and total working hours may not exceed 144 hours every three weeks, except as the implementing regulation allows."
+            cite: { source: uae_labour_law, article: "19", expect: ["two hours per day", "144"] }
+          - kind: practice
+            text:
+              en: "If an AI tool sets targets or schedules shifts, check its outputs against the working-time limits before they reach employees."
+      - id: uae-labour-3
+        title: { en: "Termination decisions", ar: "قرارات إنهاء الخدمة" }
+        points:
+          - kind: law
+            text:
+              en: "Either party may terminate the contract for a legitimate reason with written notice; the notice period is at least 30 and at most 90 days."
+            cite: { source: uae_labour_law, article: "43", expect: ["legitimate reason", "thirty days", "ninety days"] }
+          - kind: practice
+            text:
+              en: "An AI performance score is not a reason in itself. Document the underlying facts, have a person review them, and keep the record with the case."
+    quiz:
+      - id: uae-labour-q1
+        question: { en: "What is the maximum probationary period under the UAE Labour Law?" }
+        options: { en: ["3 months", "6 months", "9 months", "12 months"] }
+        answer: 1
+        explanation: { en: "Article 9 caps probation at six months from the start of work." }
+        cite: { source: uae_labour_law, article: "9", expect: ["six months"] }
+      - id: uae-labour-q2
+        question: { en: "What notice period range applies when terminating for a legitimate reason?" }
+        options: { en: ["7 to 30 days", "14 to 60 days", "30 to 90 days", "60 to 120 days"] }
+        answer: 2
+        explanation: { en: "Article 43 requires written notice of at least 30 and at most 90 days." }
+        cite: { source: uae_labour_law, article: "43", expect: ["thirty days", "ninety days"] }
+      - id: uae-labour-q3
+        question: { en: "An AI screening model uses nationality as a feature. Which provision is most directly engaged?" }
+        options: { en: ["Probationary period", "Equality and non-discrimination", "Overtime", "Annual leave"] }
+        answer: 1
+        explanation: { en: "National origin is a protected ground under Article 4." }
+        cite: { source: uae_labour_law, article: "4", expect: ["national or social origin"] }
+
+  - id: uae-pdpl
+    level: intermediate
+    minutes: 30
+    prerequisites: [uae-labour]
+    title: { en: "UAE PDPL for AI systems", ar: "قانون حماية البيانات الشخصية الإماراتي وأنظمة الذكاء الاصطناعي" }
+    summary:
+      en: "Consent, automated decisions, impact assessments, breaches and transfers under Federal Decree-Law No. 45 of 2021."
+      ar: "الموافقة والقرارات الآلية وتقييم الأثر والاختراقات ونقل البيانات وفق المرسوم بقانون اتحادي رقم 45 لسنة 2021."
+    lessons:
+      - id: uae-pdpl-1
+        title: { en: "Scope and legal basis", ar: "النطاق والأساس القانوني" }
+        points:
+          - kind: law
+            text:
+              en: "Some data is outside the PDPL's scope because other legislation governs it, including health data."
+            cite: { source: uae_pdpl, article: "2", expect: ["health"] }
+          - kind: law
+            text:
+              en: "Processing without the data subject's consent is only allowed in the cases the law lists."
+            cite: { source: uae_pdpl, article: "4", expect: ["consent"] }
+          - kind: law
+            text:
+              en: "Consent must meet the law's conditions, and the data subject can withdraw it."
+            cite: { source: uae_pdpl, article: "6", expect: ["withdraw"] }
+          - kind: practice
+            text:
+              en: "Employees rarely give free consent to their employer. Record which exception or basis you rely on for each AI use, not just a signed form."
+      - id: uae-pdpl-2
+        title: { en: "Automated decisions and impact assessments", ar: "القرارات الآلية وتقييم الأثر" }
+        points:
+          - kind: law
+            text:
+              en: "Data subjects may object to decisions based on automated processing that have legal consequences or seriously affect them."
+            cite: { source: uae_pdpl, article: "18", expect: ["automated"] }
+          - kind: law
+            text:
+              en: "An impact assessment is required before processing that is likely to pose a high risk, for example when using new technologies."
+            cite: { source: uae_pdpl, article: "21", expect: ["impact"] }
+      - id: uae-pdpl-3
+        title: { en: "Breaches and cross-border transfers", ar: "الاختراقات ونقل البيانات عبر الحدود" }
+        points:
+          - kind: law
+            text:
+              en: "The controller must report a personal data breach that prejudices privacy to the Data Office, as detailed in the implementing regulation."
+            cite: { source: uae_pdpl, article: "9", expect: ["breach"] }
+          - kind: law
+            text:
+              en: "Transfers outside the UAE depend on the destination offering adequate protection, or on one of the exceptions for transfers without it."
+            cite: { source: uae_pdpl, article: "22", expect: ["transfer"] }
+          - kind: practice
+            text:
+              en: "Using a foreign-hosted AI API usually means a cross-border transfer. Map where prompts and outputs are stored before sending personal data."
+    quiz:
+      - id: uae-pdpl-q1
+        question: { en: "Which data subject right is most directly relevant to AI-driven decisions?" }
+        options:
+          en: ["Right to data portability", "Right to object to decisions based on automated processing", "Right to a paper copy of contracts", "Right to anonymity at work"]
+        answer: 1
+        explanation: { en: "The PDPL gives a right to object to automated-processing decisions with serious effects." }
+        cite: { source: uae_pdpl, article: "18", expect: ["automated"] }
+      - id: uae-pdpl-q2
+        question: { en: "A UAE company sends employee data to an AI service hosted abroad. What must it check first?" }
+        options:
+          en: ["Nothing - cloud services are exempt", "Whether the transfer is allowed (adequate protection or a permitted exception)", "Only the vendor's price", "Whether the data is in Arabic"]
+        answer: 1
+        explanation: { en: "Cross-border transfers are regulated by the PDPL's transfer provisions." }
+        cite: { source: uae_pdpl, article: "22", expect: ["transfer"] }
+
+  - id: saudi
+    level: intermediate
+    minutes: 30
+    prerequisites: [foundations]
+    title: { en: "Saudi Arabia: Labor Law and PDPL", ar: "المملكة العربية السعودية: نظام العمل ونظام حماية البيانات الشخصية" }
+    summary:
+      en: "Employment contracts, probation, consent, impact assessments, breaches, transfers and penalties."
+      ar: "عقود العمل وفترة التجربة والموافقة وتقييم الأثر والاختراقات ونقل البيانات والعقوبات."
+    lessons:
+      - id: saudi-1
+        title: { en: "Employment contracts and probation", ar: "عقود العمل وفترة التجربة" }
+        points:
+          - kind: law
+            text:
+              en: "The employment contract is executed in duplicate; a contract is deemed to exist even if not written, and either party may demand it in writing."
+            cite: { source: sa_labour_law, article: "51", expect: ["duplicate", "deemed to exist even if not written"] }
+          - kind: law
+            text:
+              en: "Probation must be stated in the contract and may not exceed 90 days; it can be extended by written agreement up to 180 days."
+            cite: { source: sa_labour_law, article: "53", expect: ["90 days", "180 days"] }
+          - kind: note
+            text:
+              en: "The indexed Labor Law edition may predate the 2025 amendments. Confirm the current text with HRSD before relying on these limits."
+      - id: saudi-2
+        title: { en: "PDPL essentials for AI", ar: "أساسيات نظام حماية البيانات الشخصية للذكاء الاصطناعي" }
+        points:
+          - kind: law
+            text:
+              en: "Personal data may not be processed, nor its purpose changed, without the data subject's consent, except in the cases the law provides."
+            cite: { source: sa_pdpl, article: "5", expect: ["consent"] }
+          - kind: law
+            text:
+              en: "The controller must carry out an impact assessment of processing for its products and services, as set out in the regulations."
+            cite: { source: sa_pdpl, article: "22", expect: ["impact assessment"] }
+          - kind: law
+            text:
+              en: "The controller must notify the competent authority on knowing of a breach, and notify data subjects where the breach may harm them."
+            cite: { source: sa_pdpl, article: "20", expect: ["breach"] }
+          - kind: law
+            text:
+              en: "The Implementing Regulations require notifying the competent authority within 72 hours of becoming aware of a breach that may harm data subjects."
+            cite: { source: sa_pdpl_regulations, article: "24", expect: ["(72) hours"] }
+          - kind: law
+            text:
+              en: "Transfers outside the Kingdom are only permitted for the purposes the law lists and subject to the conditions of the regulations."
+            cite: { source: sa_pdpl, article: "29", expect: ["outside the kingdom"] }
+          - kind: law
+            text:
+              en: "Violations not covered by the criminal provisions can lead to a warning or a fine of up to five million riyals, which may be doubled for repeat violations."
+            cite: { source: sa_pdpl, article: "36", expect: ["five million"] }
+    quiz:
+      - id: saudi-q1
+        question: { en: "Under the indexed Saudi Labor Law text, how long can probation last at most if extended in writing?" }
+        options: { en: ["60 days", "90 days", "180 days", "1 year"] }
+        answer: 2
+        explanation: { en: "Article 53: up to 90 days, extendable by written agreement to 180 days." }
+        cite: { source: sa_labour_law, article: "53", expect: ["180 days"] }
+      - id: saudi-q2
+        question: { en: "What is the maximum administrative fine under Article 36 of the Saudi PDPL (before doubling)?" }
+        options: { en: ["SAR 500,000", "SAR 1 million", "SAR 3 million", "SAR 5 million"] }
+        answer: 3
+        explanation: { en: "Article 36 sets a warning or a fine of up to five million riyals." }
+        cite: { source: sa_pdpl, article: "36", expect: ["five million"] }
+
+  - id: eu-ai-act
+    level: advanced
+    minutes: 35
+    prerequisites: [foundations]
+    title: { en: "EU AI Act and GDPR for Gulf companies", ar: "قانون الذكاء الاصطناعي الأوروبي واللائحة العامة لحماية البيانات" }
+    summary:
+      en: "Prohibited practices, high-risk employment systems, deployer duties and GDPR overlaps."
+      ar: "الممارسات المحظورة وأنظمة التوظيف عالية المخاطر والتزامات الجهات المستخدمة والتداخل مع اللائحة العامة."
+    lessons:
+      - id: eu-1
+        title: { en: "Prohibited practices", ar: "الممارسات المحظورة" }
+        points:
+          - kind: law
+            text:
+              en: "Placing on the market or using AI systems to infer emotions of a person in the workplace or education institutions is prohibited, except for medical or safety reasons."
+            cite: { source: eu_ai_act, article: "5", expect: ["emotions", "workplace", "medical or safety reasons"] }
+      - id: eu-2
+        title: { en: "High-risk HR systems and deployer duties", ar: "أنظمة الموارد البشرية عالية المخاطر والتزامات المستخدِم" }
+        points:
+          - kind: law
+            text:
+              en: "AI systems intended for the recruitment or selection of people, such as filtering applications and evaluating candidates, are listed as high-risk."
+            cite: { source: eu_ai_act, article: "Annex III", expect: ["recruitment or selection"] }
+          - kind: law
+            text:
+              en: "Before using a high-risk AI system at the workplace, employers must inform workers' representatives and the affected workers."
+            cite: { source: eu_ai_act, article: "26", expect: ["workers' representatives"] }
+          - kind: law
+            text:
+              en: "High-risk AI systems must be designed so that people can effectively oversee them while in use."
+            cite: { source: eu_ai_act, article: "14", expect: ["human oversight"] }
+          - kind: law
+            text:
+              en: "Providers and deployers must take measures to ensure a sufficient level of AI literacy of their staff."
+            cite: { source: eu_ai_act, article: "4", expect: ["ai literacy"] }
+      - id: eu-3
+        title: { en: "GDPR overlaps", ar: "التداخل مع اللائحة العامة لحماية البيانات" }
+        points:
+          - kind: law
+            text:
+              en: "People have the right not to be subject to a decision based solely on automated processing that produces legal or similarly significant effects, subject to exceptions and safeguards."
+            cite: { source: eu_gdpr, article: "22", expect: ["solely on automated processing"] }
+          - kind: law
+            text:
+              en: "Personal data breaches must be notified to the supervisory authority without undue delay and, where feasible, within 72 hours."
+            cite: { source: eu_gdpr, article: "33", expect: ["72 hours"] }
+    quiz:
+      - id: eu-q1
+        question: { en: "Which of these is prohibited under the EU AI Act?" }
+        options:
+          en: ["CV parsing", "Inferring employees' emotions at work for productivity scoring", "A customer-service chatbot", "Spam filtering"]
+        answer: 1
+        explanation: { en: "Article 5 prohibits workplace emotion inference except for medical or safety reasons." }
+        cite: { source: eu_ai_act, article: "5", expect: ["emotions", "workplace"] }
+      - id: eu-q2
+        question: { en: "An AI tool filters job applications. How is it classified?" }
+        options: { en: ["Minimal risk", "Limited risk only", "High-risk (Annex III)", "Prohibited"] }
+        answer: 2
+        explanation: { en: "Recruitment and selection systems are listed in Annex III." }
+        cite: { source: eu_ai_act, article: "Annex III", expect: ["recruitment or selection"] }
+
+tracks:
+  - id: hr
+    title: { en: "HR teams", ar: "فرق الموارد البشرية" }
+    description: { en: "Recruitment, monitoring and employee data in the UAE.", ar: "التوظيف والمراقبة وبيانات الموظفين في الإمارات." }
+    modules: [foundations, uae-labour, uae-pdpl]
+  - id: cross-border
+    title: { en: "Regional and cross-border", ar: "الامتثال الإقليمي والعابر للحدود" }
+    description: { en: "Operating across the UAE, Saudi Arabia and the EU.", ar: "العمل بين الإمارات والسعودية والاتحاد الأوروبي." }
+    modules: [foundations, saudi, eu-ai-act]
+  - id: legal
+    title: { en: "Legal and compliance teams", ar: "الفرق القانونية وفرق الامتثال" }
+    description: { en: "The full curriculum.", ar: "المنهج الكامل." }
+    modules: [foundations, uae-labour, uae-pdpl, saudi, eu-ai-act]

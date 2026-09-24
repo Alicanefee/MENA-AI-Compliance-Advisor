@@ -1,0 +1,238 @@
+# Deterministic rules for the document checklist.
+#
+# A document is suggested when its jurisdiction is in scope and at least one of
+# its triggers matches the question / AI use case. Each legal basis lists
+# phrases the official article is expected to contain; at runtime the basis is
+# checked against the indexed text and shown as confirmed or not confirmed.
+#
+# kind: legal     the cited provision imposes the obligation (possibly conditionally)
+# kind: practice  good practice that helps demonstrate compliance; not itself required by law
+
+triggers:
+  recruitment: [cv, resume, recruit, recruitment, hiring, hire, candidate, applicant, screening, interview, job]
+  workforce: [employee, employees, worker, workers, staff, performance, promotion, termination, dismissal, hr]
+  monitoring: [monitor, monitoring, surveillance, tracking, camera, cameras, keystroke, productivity]
+  biometric: [biometric, face, facial, fingerprint, emotion, emotions, voice]
+  automated_decision: [automated, automatic, automatically, scoring, score, ranking, profiling, algorithm]
+  cross_border: [transfer, abroad, overseas, cross-border, cloud, server, outside]
+  breach: [breach, leak, leaked, hacked, unauthorized access, unauthorised access, incident]
+  personal_data: [personal data, customer data, employee data, data subject, privacy, consent]
+  ai_system: [ai, artificial intelligence, model, machine learning, chatbot, llm]
+
+documents:
+  # ---------------- United Arab Emirates ----------------
+  - id: ae_employment_contract
+    jurisdiction: AE
+    name: Written employment contract (two copies)
+    kind: legal
+    mandatory: true
+    triggers: [recruitment]
+    why: The contract must be concluded in two copies, one kept by the employer and one handed to the worker.
+    basis:
+      - { source: uae_labour_law, article: "8", expect: ["two copies"] }
+
+  - id: ae_non_discrimination_review
+    jurisdiction: AE
+    name: Non-discrimination review of AI screening and decision criteria
+    kind: practice
+    mandatory: false
+    triggers: [recruitment, workforce, automated_decision]
+    why: The Labour Law prohibits discrimination on protected grounds; a documented review of model features and outcomes helps show the AI system does not introduce it.
+    basis:
+      - { source: uae_labour_law, article: "4", expect: ["discrimination"] }
+
+  - id: ae_lawful_basis_record
+    jurisdiction: AE
+    name: Consent records, or documented reason why consent is not required
+    kind: legal
+    mandatory: true
+    triggers: [personal_data, recruitment, workforce, monitoring, biometric]
+    why: Processing personal data requires consent unless one of the listed exceptions applies.
+    basis:
+      - { source: uae_pdpl, article: "4", expect: ["consent"] }
+      - { source: uae_pdpl, article: "6", expect: ["consent"] }
+
+  - id: ae_dpia
+    jurisdiction: AE
+    name: Personal data protection impact assessment
+    kind: legal
+    mandatory: false
+    triggers: [biometric, monitoring, automated_decision, recruitment]
+    why: Required where processing is likely to pose a high risk to privacy, for example new technologies or large-scale sensitive data.
+    basis:
+      - { source: uae_pdpl, article: "21", expect: ["impact"] }
+
+  - id: ae_automated_decision_objection
+    jurisdiction: AE
+    name: Procedure for objecting to decisions based on automated processing
+    kind: legal
+    mandatory: false
+    triggers: [automated_decision, recruitment]
+    why: Data subjects have a right to object to decisions based solely on automated processing that produce legal consequences or seriously affect them.
+    basis:
+      - { source: uae_pdpl, article: "18", expect: ["automated"] }
+
+  - id: ae_breach_response
+    jurisdiction: AE
+    name: Personal data breach response and notification procedure
+    kind: legal
+    mandatory: true
+    triggers: [breach]
+    why: Breaches that prejudice privacy must be reported; timelines are set by the implementing regulation.
+    basis:
+      - { source: uae_pdpl, article: "9", expect: ["breach"] }
+
+  - id: ae_transfer_assessment
+    jurisdiction: AE
+    name: Cross-border transfer assessment (adequacy or permitted exception)
+    kind: legal
+    mandatory: true
+    triggers: [cross_border]
+    why: Transfers outside the UAE depend on an adequate level of protection in the destination or a permitted exception.
+    basis:
+      - { source: uae_pdpl, article: "22", expect: ["transfer"] }
+      - { source: uae_pdpl, article: "23", expect: ["transfer"] }
+
+  - id: ae_human_oversight_log
+    jurisdiction: AE
+    name: Human oversight log for AI-assisted decisions
+    kind: practice
+    mandatory: false
+    triggers: [ai_system, automated_decision]
+    why: The UAE AI Charter lists human oversight among its principles; recording who reviewed and approved each AI-assisted decision makes this auditable.
+    basis:
+      - { source: uae_ai_charter, expect: ["human oversight"] }
+
+  # ---------------- Saudi Arabia ----------------
+  - id: sa_employment_contract
+    jurisdiction: SA
+    name: Employment contract executed in duplicate
+    kind: legal
+    mandatory: true
+    triggers: [recruitment]
+    why: The contract is executed in duplicate, one copy for each party; either party may demand it in writing.
+    basis:
+      - { source: sa_labour_law, article: "51", expect: ["duplicate"] }
+
+  - id: sa_consent_record
+    jurisdiction: SA
+    name: Consent records, or documented legal basis under the listed exceptions
+    kind: legal
+    mandatory: true
+    triggers: [personal_data, recruitment, workforce, monitoring, biometric]
+    why: Personal data may not be processed, or its purpose changed, without consent except in the cases the law lists.
+    basis:
+      - { source: sa_pdpl, article: "5", expect: ["consent"] }
+      - { source: sa_pdpl, article: "6", expect: ["consent"] }
+
+  - id: sa_impact_assessment
+    jurisdiction: SA
+    name: Personal data processing impact assessment
+    kind: legal
+    mandatory: true
+    triggers: [biometric, monitoring, automated_decision, recruitment, ai_system]
+    why: The controller must assess the impact of processing for products or services, as detailed in the Implementing Regulations.
+    basis:
+      - { source: sa_pdpl, article: "22", expect: ["impact assessment"] }
+
+  - id: sa_breach_notification
+    jurisdiction: SA
+    name: Breach notification to SDAIA and affected data subjects
+    kind: legal
+    mandatory: true
+    triggers: [breach]
+    why: The controller must notify the competent authority on knowing of a breach, and data subjects where it may harm them. Timelines are in the Implementing Regulations.
+    basis:
+      - { source: sa_pdpl, article: "20", expect: ["breach"] }
+
+  - id: sa_transfer_assessment
+    jurisdiction: SA
+    name: Transfer assessment for personal data leaving the Kingdom
+    kind: legal
+    mandatory: true
+    triggers: [cross_border]
+    why: Transfers outside the Kingdom are allowed only for listed purposes and subject to conditions in the Implementing Regulations.
+    basis:
+      - { source: sa_pdpl, article: "29", expect: ["outside the kingdom"] }
+
+  - id: sa_ai_ethics_assessment
+    jurisdiction: SA
+    name: AI ethics self-assessment against SDAIA principles
+    kind: practice
+    mandatory: false
+    triggers: [ai_system]
+    why: SDAIA's AI Ethics Principles (fairness, privacy and security, transparency, accountability, and others) are the national reference framework.
+    basis:
+      - { source: sa_ai_ethics, expect: ["fairness", "accountability"] }
+
+  # ---------------- European Union ----------------
+  - id: eu_prohibited_practice_check
+    jurisdiction: EU
+    name: Prohibited-practice screening (e.g. workplace emotion recognition)
+    kind: legal
+    mandatory: true
+    triggers: [biometric, monitoring]
+    why: Certain practices, including inferring emotions of people in the workplace outside medical or safety reasons, are prohibited.
+    basis:
+      - { source: eu_ai_act, article: "5", expect: ["emotions", "workplace"] }
+
+  - id: eu_high_risk_classification
+    jurisdiction: EU
+    name: High-risk classification record (Annex III employment use cases)
+    kind: legal
+    mandatory: true
+    triggers: [recruitment, workforce, automated_decision]
+    why: AI used for recruitment, selection or decisions affecting work relationships is listed as high-risk.
+    basis:
+      - { source: eu_ai_act, article: "6", expect: ["annex iii"] }
+      - { source: eu_ai_act, article: "Annex III", expect: ["recruitment or selection"] }
+
+  - id: eu_worker_information
+    jurisdiction: EU
+    name: Notice to workers' representatives and affected workers before workplace use
+    kind: legal
+    mandatory: true
+    triggers: [recruitment, workforce, monitoring]
+    why: Employers deploying a high-risk AI system at the workplace must inform workers' representatives and affected workers beforehand.
+    basis:
+      - { source: eu_ai_act, article: "26", expect: ["workers' representatives"] }
+
+  - id: eu_ai_literacy
+    jurisdiction: EU
+    name: AI literacy training record for staff operating AI systems
+    kind: legal
+    mandatory: true
+    triggers: [ai_system]
+    why: Providers and deployers must take measures to ensure a sufficient level of AI literacy of their staff.
+    basis:
+      - { source: eu_ai_act, article: "4", expect: ["ai literacy"] }
+
+  - id: eu_dpia
+    jurisdiction: EU
+    name: GDPR data protection impact assessment
+    kind: legal
+    mandatory: false
+    triggers: [biometric, monitoring, automated_decision, recruitment]
+    why: Required where processing, in particular using new technologies, is likely to result in a high risk to individuals.
+    basis:
+      - { source: eu_gdpr, article: "35", expect: ["impact assessment"] }
+
+  - id: eu_automated_decision_safeguards
+    jurisdiction: EU
+    name: Safeguards for solely automated decisions (human intervention, contest)
+    kind: legal
+    mandatory: false
+    triggers: [automated_decision]
+    why: Individuals have the right not to be subject to decisions based solely on automated processing with legal or similarly significant effects, subject to exceptions and safeguards.
+    basis:
+      - { source: eu_gdpr, article: "22", expect: ["solely on automated processing"] }
+
+  - id: eu_breach_notification
+    jurisdiction: EU
+    name: Breach notification to the supervisory authority
+    kind: legal
+    mandatory: true
+    triggers: [breach]
+    why: Notify the supervisory authority without undue delay and, where feasible, within 72 hours unless the breach is unlikely to result in a risk.
+    basis:
+      - { source: eu_gdpr, article: "33", expect: ["72 hours"] }

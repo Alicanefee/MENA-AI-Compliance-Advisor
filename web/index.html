@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>AI Compliance Advisor</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <strong data-i18n="app_title">AI Compliance Advisor</strong>
+      <span class="muted" data-i18n="app_sub">UAE · Saudi Arabia · EU</span>
+    </div>
+    <div class="top-actions">
+      <span id="mode" class="pill"></span>
+      <button type="button" id="lang-toggle" class="ghost" aria-label="Switch language">العربية</button>
+    </div>
+  </header>
+
+  <aside class="disclaimer" id="disclaimer" role="note"></aside>
+
+  <nav class="tabs" role="tablist" aria-label="Sections">
+    <button role="tab" id="tab-ask" aria-controls="panel-ask" aria-selected="true" data-i18n="tab_ask">Ask</button>
+    <button role="tab" id="tab-cases" aria-controls="panel-cases" aria-selected="false" tabindex="-1" data-i18n="tab_cases">Cases</button>
+    <button role="tab" id="tab-learn" aria-controls="panel-learn" aria-selected="false" tabindex="-1" data-i18n="tab_learn">Learn</button>
+    <button role="tab" id="tab-scenarios" aria-controls="panel-scenarios" aria-selected="false" tabindex="-1" data-i18n="tab_scenarios">Scenarios</button>
+    <button role="tab" id="tab-sources" aria-controls="panel-sources" aria-selected="false" tabindex="-1" data-i18n="tab_sources">Sources</button>
+  </nav>
+
+  <main>
+    <!-- Ask -->
+    <section role="tabpanel" id="panel-ask" aria-labelledby="tab-ask">
+      <form id="ask-form" class="card stack">
+        <label for="ask-q" data-i18n="question">Question</label>
+        <textarea id="ask-q" rows="3" required minlength="3"
+          data-i18n-placeholder="question_ph"
+          placeholder="e.g. We want to use AI to screen CVs for our Dubai office. What do we need?"></textarea>
+        <label for="ask-context" data-i18n="context">AI use case (optional)</label>
+        <input id="ask-context" data-i18n-placeholder="context_ph" placeholder="e.g. ranking applicants by skills and experience">
+        <fieldset class="row">
+          <legend data-i18n="jurisdictions">Jurisdictions (none = detect)</legend>
+          <label><input type="checkbox" name="jur" value="AE"> UAE</label>
+          <label><input type="checkbox" name="jur" value="SA"> KSA</label>
+          <label><input type="checkbox" name="jur" value="EU"> EU</label>
+        </fieldset>
+        <div class="row">
+          <button type="submit" class="primary" data-i18n="ask">Ask</button>
+          <button type="button" id="ask-to-case" class="ghost" data-i18n="save_case">Save as case</button>
+        </div>
+      </form>
+      <div id="ask-out" aria-live="polite"></div>
+    </section>
+
+    <!-- Cases -->
+    <section role="tabpanel" id="panel-cases" aria-labelledby="tab-cases" hidden>
+      <form id="case-form" class="card stack">
+        <h2 data-i18n="new_case">New case</h2>
+        <div class="grid2">
+          <label><span data-i18n="owner">Owner</span><input id="case-owner" required maxlength="120"></label>
+          <label><span data-i18n="sector">Sector</span><input id="case-sector" maxlength="120"></label>
+        </div>
+        <label><span data-i18n="question">Question</span><textarea id="case-q" rows="2" required minlength="3"></textarea></label>
+        <label><span data-i18n="context">AI use case</span><input id="case-use"></label>
+        <button type="submit" class="primary" data-i18n="create_case">Create case and run advisor</button>
+      </form>
+      <div class="card">
+        <div class="row between">
+          <h2 data-i18n="cases">Cases</h2>
+          <select id="case-filter" aria-label="Filter">
+            <option value="" data-i18n="all">All</option>
+            <option value="open">open</option><option value="in_review">in_review</option>
+            <option value="approved">approved</option><option value="closed">closed</option>
+          </select>
+        </div>
+        <div id="case-list"></div>
+      </div>
+      <div id="case-detail"></div>
+    </section>
+
+    <!-- Learn -->
+    <section role="tabpanel" id="panel-learn" aria-labelledby="tab-learn" hidden>
+      <form id="learner-form" class="card row">
+        <label for="learner-id" data-i18n="learner">Learner ID</label>
+        <input id="learner-id" required pattern="[A-Za-z0-9._@\-]{1,64}" maxlength="64">
+        <button type="submit" class="primary" data-i18n="load">Load</button>
+      </form>
+      <div id="learn-out"></div>
+    </section>
+
+    <!-- Scenarios -->
+    <section role="tabpanel" id="panel-scenarios" aria-labelledby="tab-scenarios" hidden>
+      <div id="scen-out"></div>
+    </section>
+
+    <!-- Sources -->
+    <section role="tabpanel" id="panel-sources" aria-labelledby="tab-sources" hidden>
+      <div id="src-out"></div>
+    </section>
+  </main>
+
+  <script src="/static/app.js" type="module"></script>
+</body>
+</html>

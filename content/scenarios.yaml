@@ -1,0 +1,155 @@
+# Practice scenarios. Model answers are built from cited points (checked like
+# the curriculum) plus "what could change the answer", so learners see the
+# conditions and alternative readings, not just a verdict.
+
+version: "0.1.0"
+
+scenarios:
+  - id: cv-screening-dubai
+    jurisdictions: [AE, EU]
+    sector: HR
+    level: beginner
+    title: { en: "AI CV screening for Dubai and Paris hiring", ar: "فرز السير الذاتية بالذكاء الاصطناعي للتوظيف في دبي وباريس" }
+    context:
+      en: >
+        A technology company on the Dubai mainland wants an AI tool to rank 400 applications.
+        The tool reads name, age, nationality, photo, education and experience. The same shortlist
+        will be used to hire for the company's Paris office.
+    questions:
+      - id: q1
+        type: verdict
+        question: { en: "Can the company use the tool as configured?" }
+        verdict: "Unlikely without changes"
+        points:
+          - kind: law
+            text: { en: "Nationality is a protected ground: discrimination on national origin that impairs equality of opportunity is prohibited." }
+            cite: { source: uae_labour_law, article: "4", expect: ["national or social origin"] }
+          - kind: law
+            text: { en: "Candidate data is personal data; processing needs consent or one of the listed exceptions." }
+            cite: { source: uae_pdpl, article: "4", expect: ["consent"] }
+          - kind: law
+            text: { en: "For the Paris hiring, a system used to filter applications and evaluate candidates is high-risk under the EU AI Act." }
+            cite: { source: eu_ai_act, article: "Annex III", expect: ["recruitment or selection"] }
+          - kind: practice
+            text: { en: "Drop name, photo, age and nationality from the model's inputs, test outcomes by group, and have a recruiter decide." }
+        could_change:
+          en:
+            - "If the company is in DIFC or ADGM, their own data protection laws apply instead of the federal PDPL."
+            - "If the tool only sorts applications and a person reviews every file, the automated-decision analysis changes, but discrimination risk from the ranking remains."
+      - id: q2
+        type: open
+        question: { en: "Which documents should the case file contain before launch?" }
+        points:
+          - kind: law
+            text: { en: "A record of the legal basis for processing candidate data (consent or a listed exception)." }
+            cite: { source: uae_pdpl, article: "6", expect: ["consent"] }
+          - kind: law
+            text: { en: "A data protection impact assessment, as the processing uses new technology and may pose a high risk." }
+            cite: { source: uae_pdpl, article: "21", expect: ["impact"] }
+          - kind: law
+            text: { en: "For the EU side: information to workers' representatives and affected workers before workplace use." }
+            cite: { source: eu_ai_act, article: "26", expect: ["workers' representatives"] }
+          - kind: practice
+            text: { en: "A bias test report and a log of human review decisions." }
+
+  - id: emotion-monitoring
+    jurisdictions: [AE, EU]
+    sector: Logistics
+    level: intermediate
+    title: { en: "Warehouse cameras that read emotions", ar: "كاميرات مستودع تقرأ المشاعر" }
+    context:
+      en: >
+        A logistics group headquartered in Abu Dhabi, with warehouses in Abu Dhabi and Rotterdam,
+        plans AI cameras that infer workers' emotional state and produce productivity scores.
+        Workers have not been told.
+    questions:
+      - id: q1
+        type: verdict
+        question: { en: "Is the plan lawful in the Rotterdam warehouse?" }
+        verdict: "No, as described"
+        points:
+          - kind: law
+            text: { en: "Inferring the emotions of people in the workplace is a prohibited AI practice unless it is for medical or safety reasons." }
+            cite: { source: eu_ai_act, article: "5", expect: ["emotions", "workplace", "medical or safety reasons"] }
+          - kind: law
+            text: { en: "Camera footage of identifiable workers is personal data; a GDPR impact assessment is required for high-risk processing using new technologies." }
+            cite: { source: eu_gdpr, article: "35", expect: ["impact assessment"] }
+        could_change:
+          en:
+            - "A genuine safety use (for example fatigue detection for forklift drivers) may fall under the medical or safety exception, but must be narrowly designed and documented."
+      - id: q2
+        type: verdict
+        question: { en: "And in the Abu Dhabi warehouse?" }
+        verdict: "High risk; needs a documented legal basis, notice and oversight"
+        points:
+          - kind: law
+            text: { en: "Processing workers' personal data needs consent or a listed exception." }
+            cite: { source: uae_pdpl, article: "4", expect: ["consent"] }
+          - kind: law
+            text: { en: "Workers can object to decisions based on automated processing that seriously affect them, such as scores used for discipline." }
+            cite: { source: uae_pdpl, article: "18", expect: ["automated"] }
+          - kind: law
+            text: { en: "The UAE AI Charter lists human oversight among its principles (guidance, not a statute)." }
+            cite: { source: uae_ai_charter, expect: ["human oversight"] }
+        could_change:
+          en:
+            - "No UAE statute in the indexed corpus bans workplace emotion recognition outright; the absence of a ban is not permission, and sector regulators may set stricter rules."
+
+  - id: chatbot-breach-riyadh
+    jurisdictions: [SA]
+    sector: Retail
+    level: intermediate
+    title: { en: "Customer chatbot data leak in Riyadh", ar: "تسرب بيانات روبوت محادثة العملاء في الرياض" }
+    context:
+      en: >
+        A Riyadh retailer's AI chatbot vendor exposed customer names, phone numbers and order histories.
+        The retailer learned about it four days ago and has not notified anyone.
+    questions:
+      - id: q1
+        type: verdict
+        question: { en: "Is the retailer late in notifying?" }
+        verdict: "Very likely yes"
+        points:
+          - kind: law
+            text: { en: "The controller must notify the competent authority on knowing of a breach." }
+            cite: { source: sa_pdpl, article: "20", expect: ["breach"] }
+          - kind: law
+            text: { en: "The Implementing Regulations require notification within 72 hours of becoming aware of a breach that may cause harm." }
+            cite: { source: sa_pdpl_regulations, article: "24", expect: ["(72) hours"] }
+          - kind: law
+            text: { en: "Violations can lead to a warning or a fine of up to five million riyals." }
+            cite: { source: sa_pdpl, article: "36", expect: ["five million"] }
+        could_change:
+          en:
+            - "When the retailer 'knew' of the breach can be disputed (vendor report date versus confirmation); document the timeline."
+            - "The vendor contract may allocate notification tasks, but the controller stays responsible to the authority."
+
+  - id: health-data-to-uae-cloud
+    jurisdictions: [SA, AE]
+    sector: Health
+    level: advanced
+    title: { en: "Saudi patient data on a UAE-hosted AI model", ar: "بيانات مرضى سعوديين على نموذج ذكاء اصطناعي مستضاف في الإمارات" }
+    context:
+      en: >
+        A Riyadh digital-health startup wants to send patient notes to an AI model hosted in a UAE data centre
+        to generate visit summaries.
+    questions:
+      - id: q1
+        type: verdict
+        question: { en: "Can the startup send the data as planned?" }
+        verdict: "Only if transfer conditions are met"
+        points:
+          - kind: law
+            text: { en: "Transfers outside the Kingdom are permitted only for the purposes the law lists and subject to the regulations' conditions." }
+            cite: { source: sa_pdpl, article: "29", expect: ["outside the kingdom"] }
+          - kind: law
+            text: { en: "Health data is subject to additional controls and procedures set by the regulations." }
+            cite: { source: sa_pdpl, article: "23", expect: ["health data"] }
+          - kind: law
+            text: { en: "On the UAE side, health data is outside the federal PDPL's scope because other legislation governs it." }
+            cite: { source: uae_pdpl, article: "2", expect: ["health"] }
+          - kind: practice
+            text: { en: "Assess whether de-identified notes would meet the purpose, and whether an in-Kingdom deployment is available." }
+        could_change:
+          en:
+            - "Sector rules for health data (Saudi health authorities, UAE health data law) may impose localisation requirements beyond the PDPL."

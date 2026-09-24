@@ -1,0 +1,28 @@
+[project]
+name = "uae-ai-compliance"
+version = "0.1.0"
+description = "Source-grounded AI compliance advisor, case tracker and training for UAE, Saudi Arabia and EU law."
+requires-python = ">=3.11"
+license = { text = "MIT" }
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.30",
+    "pydantic>=2.8",
+    "python-dotenv>=1.0",
+    "pyyaml>=6.0",
+    "openpyxl>=3.1",
+    "python-multipart>=0.0.9",
+    "requests>=2.32",
+    "beautifulsoup4>=4.12",
+    "pypdf>=5.0",
+]
+
+[project.optional-dependencies]
+anthropic = ["anthropic>=0.40"]
+openai = ["openai>=1.50"]
+vector = ["chromadb>=0.5"]
+dev = ["pytest>=8.0", "httpx>=0.27"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]

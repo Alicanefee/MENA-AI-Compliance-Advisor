@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.env
+.claude/
+
+# Everything under data/ is generated locally: downloaded laws, indexes,
+# AI transcriptions, diff reports, case records (user data) and progress.
+data/*
+!data/README.md
